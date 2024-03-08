@@ -25,6 +25,7 @@ public class FungusAi extends CreatureAi {
         if (!creature.canEnter(x, y)) {return;}
 
         Creature child = factory.newFungus();
+        creature.doAction("spawn a child");
         child.x = x;
         child.y = y;
         spreadCount++;
