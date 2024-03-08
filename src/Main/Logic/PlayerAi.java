@@ -3,10 +3,20 @@ package Main.Logic;
 import Main.Models.Creature;
 import Main.Models.Tile;
 
+import java.util.List;
+
 public class PlayerAi extends CreatureAi {
 
-    public PlayerAi(Creature creature){
+    private List<String> messages;
+
+    public PlayerAi(Creature creature, List<String> messages){
         super(creature);
+        this.messages = messages;
+    }
+
+    @Override
+    public void onNotify(String message) {
+        messages.add(message);
     }
 
     public void onEnter(int x, int y, Tile tile) {
