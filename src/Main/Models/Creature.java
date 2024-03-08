@@ -9,6 +9,7 @@ public class Creature {
     private World world;
     public int x; // might should use Getters/Setter instead
     public int y;
+    public int z;
     private char glyph;
     private Color color;
     private CreatureAi ai;
@@ -31,10 +32,20 @@ public class Creature {
         ai.onNotify(String.format(message, params));
     }
 
-    public void moveBy(int mx, int my) {
-        Creature other = world.creature(x + mx, y + my);
+    public void moveBy(int mx, int my, int mz) {
+        Tile tile = world.tile(x+mx, y+my, z+mz);
+        if (mz != 0 && (tile != Tile.STAIRS_DOWN || tile != Tile.STAIRS_UP)) {
+            doAction("try to change floors but there are no stairs here");
+            return;
+        } else if (mz == 1 && tile == Tile.STAIRS_DOWN) {
+            doAction("goes down to level %d", z + mz);
+        } else if (mz == -1 && tile == Tile.STAIRS_UP) {
+            doAction("goes up to level %d", z + mz);
+        }
+
+        Creature other = world.creature(x + mx, y + my, z + mz);
         if (other == null) {
-            ai.onEnter(x + mx, y + my, world.tile(x + mx, y + my));
+            ai.onEnter(x + mx, y + my, z + mz, world.tile(x + mx, y + my, z + mz));
         } else attack(other);
     }
 
@@ -55,7 +66,7 @@ public class Creature {
             for (int oy = -r; oy < r + 1; oy++) {
                 if (ox*ox + oy*oy > r*r) {continue;}
 
-                Creature other = world.creature(x + ox, y + oy);
+                Creature other = world.creature(x + ox, y + oy, z);
 
                 if (other == null) {continue;}
 
@@ -93,8 +104,8 @@ public class Creature {
         ai.onUpdate();
     }
 
-    public void dig(int wx, int wy) {
-        world.dig(wx, wy);
+    public void dig(int wx, int wy, int wz) {
+        world.dig(wx, wy, wz);
     }
 
     public char glyph() {return glyph;}
@@ -106,7 +117,7 @@ public class Creature {
     public int attackValue() {return attackValue;}
     public int defenseValue() {return defenseValue;}
 
-    public boolean canEnter(int wx, int wy) {
-        return world.tile(wx, wy).isGround() && world.creature(wx, wy) == null;
+    public boolean canEnter(int wx, int wy, int wz) {
+        return world.tile(wx, wy, wz).isGround() && world.creature(wx, wy, wz) == null;
     }
 }

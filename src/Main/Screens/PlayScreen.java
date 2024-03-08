@@ -48,7 +48,7 @@ public class PlayScreen implements Screen {
     }
 
     private void createWorld() {
-        world = new WorldBuilder(90, 31)
+        world = new WorldBuilder(90, 31, 5)
                 .makeCaves()
                 .build();
     }
@@ -70,11 +70,11 @@ public class PlayScreen implements Screen {
                 int wx = x + left;
                 int wy = y + top;
 // TODO: this is super inefficient; should draw tiles and then foreach creature draw it if it's in the viewable region of the screen
-                Creature creature = world.creature(wx, wy);
+                Creature creature = world.creature(wx, wy, player.z);
                 if (creature != null) {
                     terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
                 } else {
-                    terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
+                    terminal.write(world.glyph(wx, wy, player.z), x, y, world.color(wx, wy, player.z));
                 }
             }
         }
@@ -106,17 +106,21 @@ public class PlayScreen implements Screen {
     public Screen respondToUserInput(KeyEvent k) {
         switch (k.getKeyCode()) {
             case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_H: player.moveBy(-1, 0); break;
+            case KeyEvent.VK_H: player.moveBy(-1, 0, 0); break;
             case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_L: player.moveBy( 1, 0); break;
+            case KeyEvent.VK_L: player.moveBy( 1, 0, 0); break;
             case KeyEvent.VK_UP:
-            case KeyEvent.VK_K: player.moveBy( 0,-1); break;
+            case KeyEvent.VK_K: player.moveBy( 0,-1, 0); break;
             case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_J: player.moveBy( 0, 1); break;
-            case KeyEvent.VK_Y: player.moveBy(-1,-1); break;
-            case KeyEvent.VK_U: player.moveBy( 1,-1); break;
-            case KeyEvent.VK_B: player.moveBy(-1, 1); break;
-            case KeyEvent.VK_N: player.moveBy( 1, 1); break;
+            case KeyEvent.VK_J: player.moveBy( 0, 1, 0); break;
+            case KeyEvent.VK_Y: player.moveBy(-1,-1, 0); break;
+            case KeyEvent.VK_U: player.moveBy( 1,-1, 0); break;
+            case KeyEvent.VK_B: player.moveBy(-1, 1, 0); break;
+            case KeyEvent.VK_N: player.moveBy( 1, 1, 0); break;
+            case KeyEvent.VK_PLUS:
+            case KeyEvent.VK_GREATER: player.moveBy(0, 0, -1); break;
+            case KeyEvent.VK_MINUS:
+            case KeyEvent.VK_LESS: player.moveBy(0, 0, 1); break;
         }
         return this;
     }
