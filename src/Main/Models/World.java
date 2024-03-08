@@ -1,17 +1,21 @@
 package Main.Models;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.Color;
 
 public class World {
 
     private Tile[][] tiles;
     private int width;
     private int height;
+    private List<Creature> creatures;
 
     public World(Tile[][] tiles) {
         this.tiles = tiles;
         this.width = tiles.length;
         this.height = tiles[0].length;
+        this.creatures = new ArrayList();
     }
 
     public Tile tile(int x, int y) {
@@ -20,6 +24,13 @@ public class World {
         } else {
             return tiles[x][y];
         }
+    }
+
+    public Creature creature(int x, int y) {
+        for (Creature c : creatures) {
+            if (c.x == x && c.y == y) {return c;}
+        }
+        return null;
     }
 
     public void dig(int x, int y) {
@@ -34,10 +45,22 @@ public class World {
             x = (int)(Math.random() * width);
             y = (int)(Math.random() * height);
         }
-        while (!tile(x,y).isGround());
+        while (!tile(x,y).isGround() || creature(x, y) != null);
 
         creature.x = x;
         creature.y = y;
+        creatures.add(creature);
+    }
+
+    public void remove(Creature other) {
+        creatures.remove(other);
+    }
+
+    public void update() {
+        List<Creature> toUpdate = new ArrayList<Creature>(creatures);
+        for(Creature creature: toUpdate) {
+            creature.update();
+        }
     }
 
     public char glyph(int x, int y) {

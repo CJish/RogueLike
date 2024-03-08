@@ -23,7 +23,15 @@ public class PlayScreen implements Screen {
         screenHeight = 21;
         createWorld();
         CreatureFactory creatureFactory = new CreatureFactory(world);
+        createCreatures(creatureFactory);
+    }
+
+    private void createCreatures(CreatureFactory creatureFactory) {
         player = creatureFactory.newPlayer();
+
+        for (int i = 0; i < 8; i++) {
+            creatureFactory.newFungus();
+        }
     }
 
     private void createWorld() {
@@ -48,8 +56,13 @@ public class PlayScreen implements Screen {
             for (int y = 0; y < screenHeight; y++) {
                 int wx = x + left;
                 int wy = y + top;
-
-                terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
+// TODO: this is super inefficient; should draw tiles and then foreach creature draw it if it's in the viewable region of the screen
+                Creature creature = world.creature(wx, wy);
+                if (creature != null) {
+                    terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
+                } else {
+                    terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
+                }
             }
         }
     }
@@ -66,6 +79,7 @@ public class PlayScreen implements Screen {
         int top = getScrollY();
         displayTiles(terminal, left, top);
         terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
+        world.update();
 //        terminal.write('X', player.x - left, player.y - top);
 //        terminal.write("You are having fun", 1, 1);
 //        terminal.writeCenter("--press [escape] to lose or [enter] to win --", 22);
