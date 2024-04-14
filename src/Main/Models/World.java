@@ -1,5 +1,6 @@
 package Main.Models;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
@@ -21,25 +22,32 @@ public class World {
     }
 
     public Tile tile(int x, int y, int z) {
+        System.out.println("Launching World.tile");
         if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= 0) {
             return Tile.BOUNDS;
         } else {
+            System.out.println("Finished World.Tile");
             return tiles[x][y][z];
         }
     }
 
     public Creature creature(int x, int y, int z) {
+        System.out.println("Launching World.creature");
         for (Creature c : creatures) {
-            if (c.x == x && c.y == y && c.z == z) {return c;}
+            if (c.x == x && c.y == y /**&& c.z == z*/) {return c;}
         }
+        System.out.println("Finished World.creature");
         return null;
     }
 
     public void dig(int x, int y, int z) {
+        System.out.println("Launching World.dig");
         if(tile(x,y,z).isDiggable()) {tiles[x][y][z] = Tile.FLOOR;}
+        System.out.println("Finished World.dig");
     }
 
     public void addAtEmptyLocation(Creature creature, int z) {
+        System.out.println("Launching World.addAtEmptyLocation");
         int x;
         int y;
 
@@ -53,17 +61,22 @@ public class World {
         creature.y = y;
         creature.z = z;
         creatures.add(creature);
+        System.out.println("Ended World.addAtEmptyLocation");
     }
 
     public void remove(Creature other) {
+        System.out.println("Launching World.remove");
         creatures.remove(other);
+        System.out.println("Finished World.remove");
     }
 
     public void update() {
+        System.out.println("Launching World.update");
         List<Creature> toUpdate = new ArrayList<Creature>(creatures);
         for(Creature creature: toUpdate) {
             creature.update();
         }
+        System.out.println("Finished World.update");
     }
 
     public char glyph(int x, int y, int z) {

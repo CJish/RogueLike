@@ -15,30 +15,37 @@ public class WorldBuilder {
     private int layers;
     private int regions[][][];
     private Tile[][][] tiles;
+    private int nextRegion;
 
     public WorldBuilder(int width, int height, int layers) {
+        System.out.println("Launched WorldBuilder.WorldBuilder");
         this.width = width;
         this.height = height;
         this.layers = layers;
         this.tiles = new Tile[width][height][layers];
+        System.out.println("Finished WorldBuilder.WorldBuilder");
     }
 
     public World build() {
+        System.out.println("Launched WorldBuilder.build");
+        System.out.println("Finished WorldBuilder.build");
         return new World(tiles);
     }
 
     // create a region map where each region of contiguous space has a number;
     // if two location have the same region number you can walk from one to the
     // other without digging through walls
-
     private WorldBuilder createRegions() {
+        System.out.println("Launched WorldBuilder.createRegions");
         regions = new int[width][height][layers];
-        int nextRegion = 0;
+        nextRegion = 1;
 
         for (int z = 0; z < layers; z++) {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
+                    // if the tile at x,y,z isn't a wall AND the region is zero
                     if (tiles[x][y][z] != Tile.WALL && regions[x][y][z] == 0) {
+                        // we fill the region's Points with the same number and return the size of the region
                         int size = fillRegion(nextRegion++, x, y, z);
                         // if the region is too small it gets removed; a matter of preference
                         if (size < 25) {
@@ -48,10 +55,12 @@ public class WorldBuilder {
                 }
             }
         }
+        System.out.println("Finished WorldBuilder.createRegions");
         return this;
     }
 
     private void removeRegion(int region, int z) {
+        System.out.println("Launched WorldBuilder.removeRegion");
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (regions[x][y][z] == region) {
@@ -60,38 +69,59 @@ public class WorldBuilder {
                 }
             }
         }
+        System.out.println("Finished WorldBuilder.removeRegion");
     }
 
     private int fillRegion(int region, int x, int y, int z) {
+        System.out.println("Launched WorldBuilder.fillRegion");
         int size = 1;
+        // create a list of Points
         ArrayList<Point> open = new ArrayList<Point>();
+        // add the Point x,y,z to the list of Points
         open.add(new Point(x, y, z));
+        // set region x,y,z to the nextRegion++ from createRegions (starts at zero)
         regions[x][y][z] = region;
 
+        // as long as the list open has Points in it...
         while (!open.isEmpty()) {
+            // remove Point at index zero
             Point p = open.remove(0);
-            List<Point> neighbors = p.neighbors8();
-            for (Point neighbor : neighbors) {
-                if (regions[neighbor.x][neighbor.y][neighbor.z] > 0
-                || tiles[neighbor.x][neighbor.y][neighbor.z] == Tile.WALL)
-                    continue;
-                size++;
-                regions[neighbor.x][neighbor.y][neighbor.z] = region;
-                open.add(neighbor);
+            // get that Point's 8 neighbors and put them into a list
+//            List<Point> neighbors = p.neighbors8();
+            // take the list of neighbors and iterate through its points one by one
+            for (Point neighbor : p.neighbors8()) {
+
+                if (neighbor.x >= 0 && neighbor.y >=0 && neighbor.x < width && neighbor.y < height) {
+                    // if the region at x,y,z already has a value or is a wall...
+                    if (regions[neighbor.x][neighbor.y][neighbor.z] > 0
+                            || tiles[neighbor.x][neighbor.y][neighbor.z] == Tile.WALL)
+                        // move to the next Point in the neighbors list
+                        continue;
+                    // otherwise we increase size by one
+                    size++;
+                    // and assign the current Point (from neighbors) as belonging to the current region
+                    regions[neighbor.x][neighbor.y][neighbor.z] = region;
+                    // and add the current Point (from neighbors) to the list of points to check for neighbors?
+                    open.add(neighbor);
+                }
             }
         }
+        System.out.println("Finished WorldBuilder.fillRegion");
         return size;
     }
 
     // Start at the top and connect down. Z = 0 = top
     public WorldBuilder connectRegions() {
+        System.out.println("Launching WorldBuilder.connectRegions");
         for (int z = 0; z < layers - 1; z++) {
             connectRegionsDown(z);
         }
+        System.out.println("Finished WorldBuilder.connectRegions");
         return this;
     }
 
     private void connectRegionsDown(int z) {
+        System.out.println("Launching WorldBuilder.connectRegionsDown (z)");
         List<String> connected = new ArrayList<String>();
 
         for (int x = 0; x < width; x++) {
@@ -105,9 +135,11 @@ public class WorldBuilder {
                 }
             }
         }
+        System.out.println("Finished WorldRegions.connectRegionsDown(z)");
     }
 
     private void connectRegionsDown(int z, int r1, int r2) {
+        System.out.println("Launched WorldBuilder.connectRegionsDown(z,r1,r2)");
         List<Point> candidates = findRegionOverlaps(z, r1, r2);
 
         int stairs = 0;
@@ -118,9 +150,11 @@ public class WorldBuilder {
             stairs++;
         }
         while (candidates.size() / stairs > 250);
+        System.out.println("Finished WorldBuilder.connectRegionsDown(z,r1,r2)");
     }
 
     public List<Point> findRegionOverlaps(int z, int r1, int r2) {
+        System.out.println("Launched WorldBuilder.findRegionOverlaps");
         ArrayList<Point> candidates = new ArrayList<Point>();
 
         for (int x = 0; x < width; x++) {
@@ -134,10 +168,12 @@ public class WorldBuilder {
             }
         }
         Collections.shuffle(candidates);
+        System.out.println("Finished WorldBuilder.findRegionOverlaps");
         return candidates;
     }
 
     public WorldBuilder makeCaves() {
+        System.out.println("Launched and finished WorldBuilder.makeCaves");
         return randomizeTiles()
                 .smooth(8)
                 .createRegions()
@@ -145,6 +181,7 @@ public class WorldBuilder {
     }
 
     private WorldBuilder randomizeTiles() {
+        System.out.println("Launched WorldBuilder.randomizeTiles");
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < layers; z++) {
@@ -152,11 +189,13 @@ public class WorldBuilder {
                 }
             }
         }
+        System.out.println("Finished WorldBuilder.randomizeTiles");
         return this;
     }
 
     // TODO: clean up arrow code
     private WorldBuilder smooth(int times) {
+        System.out.println("Launched WorldBuilder.smooth");
         Tile[][][] tiles2 = new Tile[width][height][layers];
         for (int time = 0; time < times; time++) {
             for (int z = 0; z < layers; z++) {
@@ -183,6 +222,7 @@ public class WorldBuilder {
             }
             tiles = tiles2;
         }
+        System.out.println("Finished WorldBuilder.smooth");
         return this;
     }
 

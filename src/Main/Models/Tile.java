@@ -4,8 +4,7 @@ import asciiPanel.AsciiPanel;
 
 import java.awt.*;
 
-// TODO: add tile function for broken wall so that players take
-// two turns to dig through a wall
+// TODO: add tile function for broken wall so that players take two turns to dig through a wall
 public enum Tile {
 
     FLOOR((char)250, AsciiPanel.yellow),
