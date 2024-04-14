@@ -16,18 +16,25 @@ public class Point {
         this.z = z;
     }
 
+    // overriding hashCode() to tell Java that two points that represent the same location should be treated as equal;
+    // making these value objects instead of reference objects
     @Override
     public int hashCode() {
+        System.out.println("Launching Point.hashCode");
         final int prime = 31;
         int result = 1;
         result = prime * result + x;
         result = prime * result + y;
         result = prime * result + z;
+        System.out.println("Finished Point.hashCode");
         return result;
     }
 
+    // overriding equals() to tell Java that two points that represent the same location should be treated as equal;
+    // making these value objects instead of reference objects
     @Override
     public boolean equals(Object obj) {
+        System.out.println("Launching Point.equals");
         if (this == obj) {return true;}
         if (obj == null) {return false;}
         if (!(obj instanceof Point)) {return false;}
@@ -35,21 +42,27 @@ public class Point {
         if (x != other.x) {return false;}
         if (y != other.y) {return false;}
         if (z != other.z) {return false;}
+        System.out.println("Finished Point.equals");
         return true;
     }
 
+    // returns a list of the 8 neighbors of a given point
+    // TODO: fix it so it doesn't add negative numbers
     public List<Point> neighbors8() {
+        System.out.println("Launched Point.neighbors8");
         List<Point> points = new ArrayList<Point>();
 
         for (int ox = -1; ox < 2; ox++) {
             for (int oy = -1; oy < 2; oy++) {
                 if (ox == 0 && oy == 0) {continue;}
                 Point newPoint = new Point(x + ox, y + oy, z);
-//                if (newPoint.x < 0 || newPoint.y < 0 || newPoint.z < 0) {continue;}
+//                if (newPoint.x < 0 || newPoint.y < 0 || newPoint.z < 0 ||
+//                newPoint.x > 90 || newPoint.y > 31 || newPoint.z > 5) {continue;}
                 points.add(newPoint);
             }
         }
         Collections.shuffle(points);
+        System.out.println("Finished Point.neighbors8");
         return points;
     }
 }

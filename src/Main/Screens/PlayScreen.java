@@ -22,35 +22,45 @@ public class PlayScreen implements Screen {
     private List<String> messages;
 
     public PlayScreen() {
+        System.out.println("Launched PlayScreen");
         screenWidth = 80;
         screenHeight = 21;
         messages = new ArrayList<String>();
+        System.out.println("PlayScreen launched createWorld");
         createWorld();
+        System.out.println("PlayScreen launched creatureFactory");
         CreatureFactory creatureFactory = new CreatureFactory(world);
+        System.out.println("PlayScreen launched createCreatures");
         createCreatures(creatureFactory);
     }
 
     private void createCreatures(CreatureFactory creatureFactory) {
+        System.out.println("Launching PlayScreen.createCreatures");
         player = creatureFactory.newPlayer(messages);
 
         for (int i = 0; i < 8; i++) {
             creatureFactory.newFungus();
         }
+        System.out.println("Finished PlayScreen.createCreatures");
     }
 
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
+        System.out.println("Launching PlayScreen.displayMessages");
         int top = screenHeight - messages.size();
         for (int i = 0; i < messages.size(); i++) {
             terminal.writeCenter(messages.get(i), top + i);
         }
         // may want to save messages into a stored list before clearing them
         messages.clear();
+        System.out.println("Finished PlayScreen.displayMessages");
     }
 
     private void createWorld() {
+        System.out.println("Launching PlayScreen.createWorld");
         world = new WorldBuilder(90, 31, 5)
                 .makeCaves()
                 .build();
+        System.out.println("Finished PlayScreen.createWorld");
     }
 
     // controls how far along the x-axis we can scroll
@@ -65,6 +75,7 @@ public class PlayScreen implements Screen {
 
     // writes the tiles onto a JPanel
     private void displayTiles(AsciiPanel terminal, int left, int top) {
+        System.out.println("Displaying tiles (PlayScreen.displayTiles");
         for (int x = 0; x < screenWidth; x++) {
             for (int y = 0; y < screenHeight; y++) {
                 int wx = x + left;
@@ -78,6 +89,7 @@ public class PlayScreen implements Screen {
                 }
             }
         }
+        System.out.println("Finished displaying tiles (PlayScreen.displayTiles");
     }
 
     // taken out in Step04 to add player
@@ -88,6 +100,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
+        System.out.println("Launching PlayScreen.displayOutput");
         int left = getScrollX();
         int top = getScrollY();
         displayTiles(terminal, left, top);
@@ -99,6 +112,7 @@ public class PlayScreen implements Screen {
 //        terminal.write('X', player.x - left, player.y - top);
 //        terminal.write("You are having fun", 1, 1);
 //        terminal.writeCenter("--press [escape] to lose or [enter] to win --", 22);
+        System.out.println("Finished PlayScreen.displayOutput");
     }
 
     // TODO: fix these key bindings to make more sense
