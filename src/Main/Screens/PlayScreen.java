@@ -22,45 +22,45 @@ public class PlayScreen implements Screen {
     private List<String> messages;
 
     public PlayScreen() {
-        System.out.println("Launched PlayScreen");
+        System.out.println("Launched PlayScreen");//TODO: Debugging 7
         screenWidth = 80;
         screenHeight = 21;
         messages = new ArrayList<String>();
-        System.out.println("PlayScreen launched createWorld");
+        System.out.println("PlayScreen launched createWorld");//TODO: Debugging 7
         createWorld();
-        System.out.println("PlayScreen launched creatureFactory");
+        System.out.println("PlayScreen launched creatureFactory");//TODO: Debugging 7
         CreatureFactory creatureFactory = new CreatureFactory(world);
-        System.out.println("PlayScreen launched createCreatures");
+        System.out.println("PlayScreen launched createCreatures");//TODO: Debugging 7
         createCreatures(creatureFactory);
     }
 
     private void createCreatures(CreatureFactory creatureFactory) {
-        System.out.println("Launching PlayScreen.createCreatures");
+        System.out.println("Launching PlayScreen.createCreatures");//TODO: Debugging 7
         player = creatureFactory.newPlayer(messages);
 
         for (int i = 0; i < 8; i++) {
             creatureFactory.newFungus();
         }
-        System.out.println("Finished PlayScreen.createCreatures");
+        System.out.println("Finished PlayScreen.createCreatures");//TODO: Debugging 7
     }
 
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
-        System.out.println("Launching PlayScreen.displayMessages");
+        System.out.println("Launching PlayScreen.displayMessages");//TODO: Debugging 7
         int top = screenHeight - messages.size();
         for (int i = 0; i < messages.size(); i++) {
             terminal.writeCenter(messages.get(i), top + i);
         }
         // may want to save messages into a stored list before clearing them
         messages.clear();
-        System.out.println("Finished PlayScreen.displayMessages");
+        System.out.println("Finished PlayScreen.displayMessages");//TODO: Debugging 7
     }
 
     private void createWorld() {
-        System.out.println("Launching PlayScreen.createWorld");
+        System.out.println("Launching PlayScreen.createWorld");//TODO: Debugging 7
         world = new WorldBuilder(90, 31, 5)
                 .makeCaves()
                 .build();
-        System.out.println("Finished PlayScreen.createWorld");
+        System.out.println("Finished PlayScreen.createWorld");//TODO: Debugging 7
     }
 
     // controls how far along the x-axis we can scroll
@@ -75,7 +75,7 @@ public class PlayScreen implements Screen {
 
     // writes the tiles onto a JPanel
     private void displayTiles(AsciiPanel terminal, int left, int top) {
-        System.out.println("Displaying tiles (PlayScreen.displayTiles");
+        System.out.println("Displaying tiles (PlayScreen.displayTiles");//TODO: Debugging 7
         for (int x = 0; x < screenWidth; x++) {
             for (int y = 0; y < screenHeight; y++) {
                 int wx = x + left;
@@ -89,7 +89,7 @@ public class PlayScreen implements Screen {
                 }
             }
         }
-        System.out.println("Finished displaying tiles (PlayScreen.displayTiles");
+        System.out.println("Finished displaying tiles (PlayScreen.displayTiles");//TODO: Debugging 7
     }
 
     // taken out in Step04 to add player
@@ -100,7 +100,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        System.out.println("Launching PlayScreen.displayOutput");
+        System.out.println("Launching PlayScreen.displayOutput");//TODO: Debugging 7
         int left = getScrollX();
         int top = getScrollY();
         displayTiles(terminal, left, top);
@@ -112,7 +112,7 @@ public class PlayScreen implements Screen {
 //        terminal.write('X', player.x - left, player.y - top);
 //        terminal.write("You are having fun", 1, 1);
 //        terminal.writeCenter("--press [escape] to lose or [enter] to win --", 22);
-        System.out.println("Finished PlayScreen.displayOutput");
+        System.out.println("Finished PlayScreen.displayOutput");//TODO: Debugging 7
     }
 
     // TODO: fix these key bindings to make more sense

@@ -20,13 +20,13 @@ public class Point {
     // making these value objects instead of reference objects
     @Override
     public int hashCode() {
-        System.out.println("Launching Point.hashCode");
+        System.out.println("Launching Point.hashCode");//TODO: Debugging 7
         final int prime = 31;
         int result = 1;
         result = prime * result + x;
         result = prime * result + y;
         result = prime * result + z;
-        System.out.println("Finished Point.hashCode");
+        System.out.println("Finished Point.hashCode");//TODO: Debugging 7
         return result;
     }
 
@@ -34,7 +34,7 @@ public class Point {
     // making these value objects instead of reference objects
     @Override
     public boolean equals(Object obj) {
-        System.out.println("Launching Point.equals");
+        System.out.println("Launching Point.equals");//TODO: Debugging 7
         if (this == obj) {return true;}
         if (obj == null) {return false;}
         if (!(obj instanceof Point)) {return false;}
@@ -42,14 +42,14 @@ public class Point {
         if (x != other.x) {return false;}
         if (y != other.y) {return false;}
         if (z != other.z) {return false;}
-        System.out.println("Finished Point.equals");
+        System.out.println("Finished Point.equals");//TODO: Debugging 7
         return true;
     }
 
     // returns a list of the 8 neighbors of a given point
     // TODO: fix it so it doesn't add negative numbers
     public List<Point> neighbors8() {
-        System.out.println("Launched Point.neighbors8");
+        System.out.println("Launched Point.neighbors8");//TODO: Debugging 7
         List<Point> points = new ArrayList<Point>();
 
         for (int ox = -1; ox < 2; ox++) {
@@ -62,7 +62,7 @@ public class Point {
             }
         }
         Collections.shuffle(points);
-        System.out.println("Finished Point.neighbors8");
+        System.out.println("Finished Point.neighbors8");//TODO: Debugging 7
         return points;
     }
 }

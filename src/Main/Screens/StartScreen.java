@@ -7,10 +7,10 @@ import java.awt.event.KeyEvent;
 public class StartScreen implements Screen {
 
     public void displayOutput(AsciiPanel terminal) {
-        System.out.println("Launching StartScreen.displayOutput");
+        System.out.println("Launching StartScreen.displayOutput");//TODO: Debugging 7
         terminal.write("rl tutorial", 1, 1);
         terminal.writeCenter("--press [enter] to start --", 22);
-        System.out.println("Finished StartScreen.displayOutput");
+        System.out.println("Finished StartScreen.displayOutput");//TODO: Debugging 7
     }
 
     public Screen respondToUserInput(KeyEvent k) {
