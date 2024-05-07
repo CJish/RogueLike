@@ -14,21 +14,21 @@ public class WorldBuilder {
     private int height;
     private int layers;
     private int regions[][][];
-    private Tile[][][] tiles;
+    private Tile[][][] tiles;//TODO: difference here (regions)
     private int nextRegion;
 
     public WorldBuilder(int width, int height, int layers) {
-        System.out.println("Launched WorldBuilder.WorldBuilder");
+        System.out.println("Launched WorldBuilder.WorldBuilder");//TODO: Debugging 7
         this.width = width;
         this.height = height;
         this.layers = layers;
         this.tiles = new Tile[width][height][layers];
-        System.out.println("Finished WorldBuilder.WorldBuilder");
+        System.out.println("Finished WorldBuilder.WorldBuilder");//TODO: Debugging 7
     }
 
     public World build() {
-        System.out.println("Launched WorldBuilder.build");
-        System.out.println("Finished WorldBuilder.build");
+        System.out.println("Launched WorldBuilder.build");//TODO: Debugging 7
+        System.out.println("Finished WorldBuilder.build");//TODO: Debugging 7
         return new World(tiles);
     }
 
@@ -36,7 +36,7 @@ public class WorldBuilder {
     // if two location have the same region number you can walk from one to the
     // other without digging through walls
     private WorldBuilder createRegions() {
-        System.out.println("Launched WorldBuilder.createRegions");
+        System.out.println("Launched WorldBuilder.createRegions");//TODO: Debugging 7
         regions = new int[width][height][layers];
         nextRegion = 1;
 
@@ -55,12 +55,12 @@ public class WorldBuilder {
                 }
             }
         }
-        System.out.println("Finished WorldBuilder.createRegions");
+        System.out.println("Finished WorldBuilder.createRegions");//TODO: Debugging 7
         return this;
     }
 
     private void removeRegion(int region, int z) {
-        System.out.println("Launched WorldBuilder.removeRegion");
+        System.out.println("Launched WorldBuilder.removeRegion");//TODO: Debugging 7
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (regions[x][y][z] == region) {
@@ -69,11 +69,11 @@ public class WorldBuilder {
                 }
             }
         }
-        System.out.println("Finished WorldBuilder.removeRegion");
+        System.out.println("Finished WorldBuilder.removeRegion");//TODO: Debugging 7
     }
 
     private int fillRegion(int region, int x, int y, int z) {
-        System.out.println("Launched WorldBuilder.fillRegion");
+        System.out.println("Launched WorldBuilder.fillRegion");//TODO: Debugging 7
         int size = 1;
         // create a list of Points
         ArrayList<Point> open = new ArrayList<Point>();
@@ -106,22 +106,22 @@ public class WorldBuilder {
                 }
             }
         }
-        System.out.println("Finished WorldBuilder.fillRegion");
+        System.out.println("Finished WorldBuilder.fillRegion");//TODO: Debugging 7
         return size;
     }
 
     // Start at the top and connect down. Z = 0 = top
     public WorldBuilder connectRegions() {
-        System.out.println("Launching WorldBuilder.connectRegions");
+        System.out.println("Launching WorldBuilder.connectRegions");//TODO: Debugging 7
         for (int z = 0; z < layers - 1; z++) {
             connectRegionsDown(z);
         }
-        System.out.println("Finished WorldBuilder.connectRegions");
+        System.out.println("Finished WorldBuilder.connectRegions");//TODO: Debugging 7
         return this;
     }
 
     private void connectRegionsDown(int z) {
-        System.out.println("Launching WorldBuilder.connectRegionsDown (z)");
+        System.out.println("Launching WorldBuilder.connectRegionsDown (z)");//TODO: Debugging 7
         List<String> connected = new ArrayList<String>();
 
         for (int x = 0; x < width; x++) {
@@ -135,11 +135,11 @@ public class WorldBuilder {
                 }
             }
         }
-        System.out.println("Finished WorldRegions.connectRegionsDown(z)");
+        System.out.println("Finished WorldRegions.connectRegionsDown(z)");//TODO: Debugging 7
     }
 
     private void connectRegionsDown(int z, int r1, int r2) {
-        System.out.println("Launched WorldBuilder.connectRegionsDown(z,r1,r2)");
+        System.out.println("Launched WorldBuilder.connectRegionsDown(z,r1,r2)");//TODO: Debugging 7
         List<Point> candidates = findRegionOverlaps(z, r1, r2);
 
         int stairs = 0;
@@ -150,11 +150,11 @@ public class WorldBuilder {
             stairs++;
         }
         while (candidates.size() / stairs > 250);
-        System.out.println("Finished WorldBuilder.connectRegionsDown(z,r1,r2)");
+        System.out.println("Finished WorldBuilder.connectRegionsDown(z,r1,r2)");//TODO: Debugging 7
     }
 
     public List<Point> findRegionOverlaps(int z, int r1, int r2) {
-        System.out.println("Launched WorldBuilder.findRegionOverlaps");
+        System.out.println("Launched WorldBuilder.findRegionOverlaps");//TODO: Debugging 7
         ArrayList<Point> candidates = new ArrayList<Point>();
 
         for (int x = 0; x < width; x++) {
@@ -168,12 +168,12 @@ public class WorldBuilder {
             }
         }
         Collections.shuffle(candidates);
-        System.out.println("Finished WorldBuilder.findRegionOverlaps");
+        System.out.println("Finished WorldBuilder.findRegionOverlaps");//TODO: Debugging 7
         return candidates;
     }
 
     public WorldBuilder makeCaves() {
-        System.out.println("Launched and finished WorldBuilder.makeCaves");
+        System.out.println("Launched and finished WorldBuilder.makeCaves");//TODO: Debugging 7
         return randomizeTiles()
                 .smooth(8)
                 .createRegions()
@@ -181,7 +181,7 @@ public class WorldBuilder {
     }
 
     private WorldBuilder randomizeTiles() {
-        System.out.println("Launched WorldBuilder.randomizeTiles");
+        System.out.println("Launched WorldBuilder.randomizeTiles");//TODO: Debugging 7
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < layers; z++) {
@@ -189,13 +189,13 @@ public class WorldBuilder {
                 }
             }
         }
-        System.out.println("Finished WorldBuilder.randomizeTiles");
+        System.out.println("Finished WorldBuilder.randomizeTiles");//TODO: Debugging 7
         return this;
     }
 
     // TODO: clean up arrow code
     private WorldBuilder smooth(int times) {
-        System.out.println("Launched WorldBuilder.smooth");
+        System.out.println("Launched WorldBuilder.smooth");//TODO: Debugging 7
         Tile[][][] tiles2 = new Tile[width][height][layers];
         for (int time = 0; time < times; time++) {
             for (int z = 0; z < layers; z++) {
@@ -222,7 +222,7 @@ public class WorldBuilder {
             }
             tiles = tiles2;
         }
-        System.out.println("Finished WorldBuilder.smooth");
+        System.out.println("Finished WorldBuilder.smooth");//TODO: Debugging 7
         return this;
     }
 

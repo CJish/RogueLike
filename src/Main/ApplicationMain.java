@@ -10,29 +10,28 @@ import java.awt.event.KeyListener;
 // initializes the game then delegates input and output
 public class ApplicationMain extends JFrame implements KeyListener {
 
-    private AsciiPanel terminal; // Creates what is essentially a JPanel
+    private AsciiPanel terminal; // Creates what is essentially a customized JPanel
     private Screen screen; // creates a screen Object
 
     public ApplicationMain() {
-        super(); // JFrame
-        System.out.println("Launching ApplicationMain()");
+        super(); // Call to the JFrame
+        System.out.println("Launching ApplicationMain()"); //TODO: Debugging 7
         terminal = new AsciiPanel(); // creating a JPanel to hold graphics
-        terminal.write("rl tutorial", 1, 1); // simple load screen
+        terminal.write("rl tutorial", 1, 1); // Throw an up an intro screen with a string //TODO: Keep?
         add(terminal); // putting the JPanel onto the JFrame
         pack(); // putting it all together; sets the size etc
         screen = new StartScreen();
         addKeyListener(this);
         repaint();
-        System.out.println();
-        System.out.println("Finished ApplicationMain()");
+        System.out.println("Finished ApplicationMain()"); //TODO: Debugging 7
     }
 
     public void repaint() {
-        System.out.println("Launching ApplicationMain.repaint");
+        System.out.println("Launching ApplicationMain.repaint"); //TODO: Debugging 7
         terminal.clear();
         screen.displayOutput(terminal);
         super.repaint();
-        System.out.println("Finished ApplicationMain.repaint");
+        System.out.println("Finished ApplicationMain.repaint"); //TODO: Debugging 7
     }
 
     public void keyPressed(KeyEvent k) {
@@ -42,13 +41,16 @@ public class ApplicationMain extends JFrame implements KeyListener {
 
     public void keyReleased(KeyEvent k) {}
 
-    public void keyTyped(KeyEvent k) {}
+    public void keyTyped(KeyEvent k) {
+//        screen = screen.respondToUserInput(e);
+//        repaint();
+    }
 
     public static void main(String[] args) {
-        System.out.println("Launching ApplicationMain.main");
+        System.out.println("Launching ApplicationMain.main"); //TODO: Debugging 7
         ApplicationMain app = new ApplicationMain(); // initialize the game
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // kills the game when the window is closed
         app.setVisible(true); // because sometimes it won't be visible
-        System.out.println("Finished ApplicationMain.main");
+        System.out.println("Finished ApplicationMain.main"); //TODO: Debugging 7
     }
 }
