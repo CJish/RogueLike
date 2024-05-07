@@ -15,20 +15,20 @@ public class CreatureFactory {
     }
 
     public Creature newPlayer(List<String> messages) {
-        System.out.println("Launching CreatureFactory.newPlayer");//TODO: Debugging 7
+//        System.out.println("Launching CreatureFactory.newPlayer");// Debugging 7
         Creature player = new Creature(world, '@', AsciiPanel.brightCyan, 100, 20, 5);
         world.addAtEmptyLocation(player, 0); //TODO: difference here
         new PlayerAi(player, messages); //TODO: difference here
-        System.out.println("Finished CreatureFactory.newPlayer");//TODO: Debugging 7
+//        System.out.println("Finished CreatureFactory.newPlayer");// Debugging 7
         return player;
     }
 
     public Creature newFungus() {
-        System.out.println("Launching CreatureFactory.newFungus");//TODO: Debugging 7
+//        System.out.println("Launching CreatureFactory.newFungus");// Debugging 7
         Creature fungus = new Creature(world, 'f', AsciiPanel.green, 10, 0, 0);
         world.addAtEmptyLocation(fungus, fungus.z); //TODO: difference here
         new FungusAi(fungus, this);
-        System.out.println("Finished CreatureFactory.newFungus");//TODO: Debugging 7
+//        System.out.println("Finished CreatureFactory.newFungus");// Debugging 7
         return fungus;
     }
 }
