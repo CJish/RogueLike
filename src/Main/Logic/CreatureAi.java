@@ -8,10 +8,10 @@ public class CreatureAi {
     protected Creature creature;
 
     public CreatureAi(Creature creature) {
-        System.out.println("Launching CreatureAi.CreatureAi"); // Debugging 7
+//        System.out.println("Launching CreatureAi.CreatureAi"); // Debugging 7
         this.creature = creature;
         this.creature.setCreatureAi(this);
-        System.out.println("Finished CreatureAi.CreatureAi");// Debugging 7
+//        System.out.println("Finished CreatureAi.CreatureAi");// Debugging 7
     }
 
     public void onEnter(int x, int y, int z, Tile tile) {}

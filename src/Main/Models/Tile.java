@@ -22,6 +22,14 @@ public enum Tile {
         return this == Tile.FLOOR;
     }
 
+    public boolean isStairs_Down() {
+        return this == Tile.STAIRS_DOWN;
+    }
+
+    public boolean isStairs_UP() {
+        return this == Tile.STAIRS_UP;
+    }
+
     private char glyph;
     public char glyph() {return glyph;}
 
