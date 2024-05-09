@@ -115,26 +115,26 @@ public class PlayScreen implements Screen {
 //        System.out.println("Finished PlayScreen.displayOutput");// Debugging 7
     }
 
-    // TODO: fix these key bindings to make more sense
+    // TODO: Need to add an explainer for controls to either the start screen or in-game
     @Override
     public Screen respondToUserInput(KeyEvent k) {
         switch (k.getKeyCode()) {
             case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_H: player.moveBy(-1, 0, 0); break;
+            case KeyEvent.VK_NUMPAD4: player.moveBy(-1, 0, 0); break;
             case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_L: player.moveBy( 1, 0, 0); break;
+            case KeyEvent.VK_NUMPAD6: player.moveBy( 1, 0, 0); break;
             case KeyEvent.VK_UP:
-            case KeyEvent.VK_K: player.moveBy( 0,-1, 0); break;
+            case KeyEvent.VK_NUMPAD8: player.moveBy( 0,-1, 0); break;
             case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_J: player.moveBy( 0, 1, 0); break;
-            case KeyEvent.VK_Y: player.moveBy(-1,-1, 0); break;
-            case KeyEvent.VK_U: player.moveBy( 1,-1, 0); break;
-            case KeyEvent.VK_B: player.moveBy(-1, 1, 0); break;
-            case KeyEvent.VK_N: player.moveBy( 1, 1, 0); break;
-            case KeyEvent.VK_PLUS:
-            case KeyEvent.VK_GREATER: player.moveBy(0, 0, -1); break;
-            case KeyEvent.VK_MINUS:
-            case KeyEvent.VK_LESS: player.moveBy(0, 0, 1); break;
+            case KeyEvent.VK_NUMPAD2: player.moveBy( 0, 1, 0); break;
+            case KeyEvent.VK_NUMPAD9: player.moveBy(1, -1, 0); break;
+            case KeyEvent.VK_NUMPAD7: player.moveBy(-1, -1, 0); break;
+            case KeyEvent.VK_NUMPAD3: player.moveBy(1, 1, 0); break;
+            case KeyEvent.VK_NUMPAD1: player.moveBy(-1, 1, 0); break;
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_ADD: player.moveBy(0, 0, -1); break; // up one floor
+            case KeyEvent.VK_SUBTRACT:
+            case KeyEvent.VK_S: player.moveBy(0, 0, 1); break; // down one floor
         }
         return this;
     }
