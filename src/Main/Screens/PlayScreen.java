@@ -9,6 +9,7 @@ import asciiPanel.AsciiPanel;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 // responsible for showing the main content
 public class PlayScreen implements Screen {
@@ -22,37 +23,39 @@ public class PlayScreen implements Screen {
     private List<String> messages;
 
     public PlayScreen() {
-//        System.out.println("Launched PlayScreen");// Debugging 7
         screenWidth = 80;
         screenHeight = 21;
         messages = new ArrayList<String>();
-//        System.out.println("PlayScreen launched createWorld");// Debugging 7
         createWorld();
-//        System.out.println("PlayScreen launched creatureFactory");// Debugging 7
         CreatureFactory creatureFactory = new CreatureFactory(world);
-//        System.out.println("PlayScreen launched createCreatures");// Debugging 7
         createCreatures(creatureFactory);
     }
 
+    private int assignRandomDepth() {
+        Random rand = new Random();
+
+        int randomDepth = rand.nextInt(5); // 0 - 4
+        randomDepth++;
+        return randomDepth;
+    }
+
     private void createCreatures(CreatureFactory creatureFactory) {
-//        System.out.println("Launching PlayScreen.createCreatures");// Debugging 7
         player = creatureFactory.newPlayer(messages);
+        Random rand = new Random();
+        int randomDepth;
 
         for (int i = 0; i < 8; i++) {
-            creatureFactory.newFungus();
+            creatureFactory.newFungus(assignRandomDepth()); // TODO: all spawning at floor 1; isn't assigning a random depth
         }
-//        System.out.println("Finished PlayScreen.createCreatures");// Debugging 7
     }
 
     private void displayMessages(AsciiPanel terminal, List<String> messages) {
-//        System.out.println("Launching PlayScreen.displayMessages");// Debugging 7
-        int top = screenHeight - messages.size();
+        int top = screenHeight - messages.size() + 1;
         for (int i = 0; i < messages.size(); i++) {
             terminal.writeCenter(messages.get(i), top + i);
         }
         // may want to save messages into a stored list before clearing them
         messages.clear();
-//        System.out.println("Finished PlayScreen.displayMessages");// Debugging 7
     }
 
     private void createWorld() {
@@ -60,7 +63,6 @@ public class PlayScreen implements Screen {
         world = new WorldBuilder(90, 31, 5) // TODO: implement ask the user for the dimensions instead of hardcoding it
                 .makeCaves()
                 .build();
-//        System.out.println("Finished PlayScreen.createWorld");// Debugging 7
     }
 
     // controls how far along the x-axis we can scroll
@@ -75,44 +77,42 @@ public class PlayScreen implements Screen {
 
     // writes the tiles onto a JPanel
     private void displayTiles(AsciiPanel terminal, int left, int top) {
-//        System.out.println("Displaying tiles (PlayScreen.displayTiles");// Debugging 7
         for (int x = 0; x < screenWidth; x++) {
             for (int y = 0; y < screenHeight; y++) {
                 int wx = x + left;
                 int wy = y + top;
+                int wz = player.z;
 // TODO: this is super inefficient; should draw tiles and then foreach creature draw it if it's in the viewable region of the screen
-                Creature creature = world.creature(wx, wy, player.z);
-                if (creature != null) {
+                Creature creature = world.creature(wx, wy, wz);
+                if (creature != null && creature.z == wz) {
                     terminal.write(creature.glyph(), creature.x - left, creature.y - top, creature.color());
                 } else {
-                    terminal.write(world.glyph(wx, wy, player.z), x, y, world.color(wx, wy, player.z));
+                    terminal.write(world.glyph(wx, wy, wz), x, y, world.color(wx, wy, wz));
                 }
             }
         }
-//        System.out.println("Finished displaying tiles (PlayScreen.displayTiles");// Debugging 7
     }
 
-    // taken out in Step04 to add player
-//    private void scrollBy(int mx, int my) {
-//        centerX = Math.max(0, Math.min(centerX + mx, world.width() - 1));
-//        centerY = Math.max(0, Math.min(centerY + my, world.height() - 1));
-//    }
+
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-//        System.out.println("Launching PlayScreen.displayOutput");// Debugging 7
         int left = getScrollX();
         int top = getScrollY();
+
         displayTiles(terminal, left, top);
+        displayMessages(terminal, messages);
+
         terminal.write(player.glyph(), player.x - left, player.y - top, player.color());
-        world.update();
+
         String stats = String.format(" %3d/%3d hp", player.hp(), player.maxHP());
         terminal.write(stats, 1, 23);
-        displayMessages(terminal, messages);
-//        terminal.write('X', player.x - left, player.y - top);
-//        terminal.write("You are having fun", 1, 1);
-//        terminal.writeCenter("--press [escape] to lose or [enter] to win --", 22);
-//        System.out.println("Finished PlayScreen.displayOutput");// Debugging 7
+
+        String level = String.format("Floor: %3d", player.z + 1);
+        terminal.write(level, 1, 22);
+
+        world.update();
+
     }
 
     // TODO: Need to add an explainer for controls to either the start screen or in-game

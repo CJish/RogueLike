@@ -49,18 +49,25 @@ public class Creature {
     public void moveBy(int mx, int my, int mz) {
 //        System.out.println("Launched Creature.moveBy");// Debugging 7
         Tile tile = world.tile(x+mx, y+my, z+mz);
-        if (mz != 0 && (tile != Tile.STAIRS_DOWN || tile != Tile.STAIRS_UP)) {
-            doAction("try to change floors but there are no stairs here");
-            return;
-        } else if (mz == 1 && tile == Tile.STAIRS_DOWN) {
-            doAction("goes down to level %d", z + mz);
-        } else if (mz == -1 && tile == Tile.STAIRS_UP) {
-            doAction("goes up to level %d", z + mz);
+        if (mz == -1) {
+            if (tile ==Tile.STAIRS_DOWN) {
+                doAction("walk down the stairs to level %d", z + mz);
+            } else {
+                doAction("no stairs here");
+                return;
+            }
+        } else if (mz == 1) {
+            if (tile == Tile.STAIRS_UP) {
+                doAction("walk up the stairs to level %d", z + mz);
+            } else {
+                doAction("no stairs here");
+                return;
+            }
         }
 
         Creature other = world.creature(x + mx, y + my, z + mz);
         if (other == null) {
-            ai.onEnter(x + mx, y + my, z + mz, world.tile(x + mx, y + my, z + mz));
+            ai.onEnter(x + mx, y + my, z + mz, tile);
         } else attack(other);
 //        System.out.println("Finished Creature.moveBy");// Debugging 7
     }

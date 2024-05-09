@@ -16,7 +16,7 @@ public class FungusAi extends CreatureAi {
 
     public void onUpdate() {
 //        System.out.println("Launched FungusAi.onUpdate");// Debugging 7
-        if (spreadCount < 5 && Math.random() < 0.02) {
+        if (spreadCount < 5 && Math.random() < 0.05) {
             spread();
         }
 //        System.out.println("Finished FungusAi.onUpdate");// Debugging 7
@@ -30,7 +30,7 @@ public class FungusAi extends CreatureAi {
 
         if (!creature.canEnter(x, y, creature.z)) {return;}//TODO: difference here
 
-        Creature child = factory.newFungus(); //TODO: difference here
+        Creature child = factory.newFungus(z); //TODO: difference here
         creature.doAction("spawn a child");
         child.x = x;
         child.y = y;
